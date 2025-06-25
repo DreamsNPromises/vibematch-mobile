@@ -2,19 +2,43 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { COLORS } from "../constants/colors.js";
 
-export default function LabeledInput({ label, value, onChangeText, keyboardType = "default", ...props }) {
+export default function LabeledInput({ label, value, onChangeText, keyboardType = "default", multiline = false, ...props }) {
   const [isFocused, setIsFocused] = useState(false);
+  const [inputHeight, setInputHeight] = useState(40);
 
   return (
-    <View style={[styles.container, isFocused && { borderColor: COLORS.secondary }]}>
+    <View style={[styles.container, isFocused && { borderColor: COLORS.secondary }, multiline && { paddingVertical: 12 }]}>
       <Text style={[styles.label, isFocused && { color: COLORS.secondary }]}>{label}</Text>
       <TextInput
         style={styles.input}
         value={value}
         onChangeText={onChangeText}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => {
+          setIsFocused(false);
+          if (multiline) setInputHeight(40); // сброс высоты
+        }}
         keyboardType={keyboardType}
+        multiline={multiline}
+        textAlignVertical={multiline ? "top" : "center"}
+        style={[
+          styles.input,
+          multiline && { height: inputHeight, paddingTop: 8, paddingBottom: 8 },
+        ]}
+        onContentSizeChange={(e) => {
+          if (multiline) {
+            const height = e.nativeEvent.contentSize.height;
+            if (height < 40) {
+              setInputHeight(40);
+            } else if (height !== inputHeight) {
+              setInputHeight(height + 4); // немного форсируем рост
+            }
+          }
+        }}
+        style={[
+          styles.input,
+          multiline && { height: inputHeight, paddingTop: 8, paddingBottom: 8 },
+        ]}
         {...props}
       />
     </View>

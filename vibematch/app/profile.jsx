@@ -24,6 +24,8 @@ export default function ProfileScreen() {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [avatarUri, setAvatarUri] = useState(null);
     //const [status, requestPermission] = MediaLibrary.usePermissions();
+    const [selectedGender, setSelectedGender] = useState(null);
+    const [description, setDescription] = useState("");
 
     const handleSave = () => {
         //alert("Данные сохранены!");
@@ -105,12 +107,48 @@ export default function ProfileScreen() {
                                 keyboardType="text"
                             />
 
-                            <LabeledInput
+                            {/* <LabeledInput
                                 label="Email"
                                 value={email}
                                 onChangeText={setEmail}
                                 keyboardType="email"
-                            />
+                            /> */}
+
+                            <View style={localStyles.genderSelector}>
+                                <TouchableOpacity
+                                    style={[
+                                        localStyles.genderButton,
+                                        selectedGender === "male" && localStyles.genderButtonActive,
+                                    ]}
+                                    onPress={() => setSelectedGender("male")}
+                                >
+                                    <Text
+                                        style={[
+                                            localStyles.genderText,
+                                            selectedGender === "male" && localStyles.genderTextActive,
+                                        ]}
+                                    >
+                                        Male
+                                    </Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    style={[
+                                        localStyles.genderButton,
+                                        selectedGender === "female" && localStyles.genderButtonActive,
+                                    ]}
+                                    onPress={() => setSelectedGender("female")}
+                                >
+                                    <Text
+                                        style={[
+                                            localStyles.genderText,
+                                            selectedGender === "female" && localStyles.genderTextActive,
+                                        ]}
+                                    >
+                                        Female
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
 
                             <TouchableOpacity
                                 style={localStyles.datePickerButton}
@@ -135,6 +173,14 @@ export default function ProfileScreen() {
                                     maximumDate={new Date()}
                                 />
                             )}
+
+                            <LabeledInput
+                                label="Description"
+                                value={description}
+                                onChangeText={setDescription}
+                                multiline
+                                keyboardType="text"
+                            />
                         </View>
 
                     </ScrollView>
@@ -232,5 +278,32 @@ const localStyles = StyleSheet.create({
         position: "relative",
         bottom: 35,
         left: 60,
+    },
+
+    genderSelector: {
+        flexDirection: "row",
+        justifyContent: "center",
+        marginBottom: 20,
+        gap: 12,
+    },
+    genderButton: {
+        flex: 1,
+        paddingVertical: 18,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: COLORS.border,
+        alignItems: "center",
+    },
+    genderButtonActive: {
+        backgroundColor: COLORS.primary,
+        borderColor: COLORS.primary,
+    },
+    genderText: {
+        fontSize: 16,
+        color: COLORS.text,
+        fontFamily: "ADLaM",
+    },
+    genderTextActive: {
+        color: COLORS.white,
     },
 });

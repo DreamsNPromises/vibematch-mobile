@@ -15,7 +15,7 @@ export default function RootLayout() {
 
   return (
     <Stack>
-      <Stack.Screen name="profile" options={{ headerShown: false }} />
+      <Stack.Screen name="main" options={{ headerShown: false }} />
       {/* остальные экраны */}
     </Stack>
   );
